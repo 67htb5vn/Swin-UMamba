@@ -58,7 +58,11 @@ class DefaultPreprocessor(object):
         shape_before_cropping = data.shape[1:]
         properties['shape_before_cropping'] = shape_before_cropping
         # this command will generate a segmentation. This is important because of the nonzero mask which we may need
-        data, seg, bbox = crop_to_nonzero(data, seg)
+        
+
+        data, seg, bbox = crop_to_nonzero(data, seg) #đây
+
+
         properties['bbox_used_for_cropping'] = bbox
         # print(data.shape, seg.shape)
         properties['shape_after_cropping_and_before_resampling'] = data.shape[1:]
@@ -75,14 +79,23 @@ class DefaultPreprocessor(object):
         # normalize
         # normalization MUST happen before resampling or we get huge problems with resampled nonzero masks no
         # longer fitting the images perfectly!
+
+
         data = self._normalize(data, seg, configuration_manager,
-                               plans_manager.foreground_intensity_properties_per_channel)
+                               plans_manager.foreground_intensity_properties_per_channel) #đây
+
+        
 
         # print('current shape', data.shape[1:], 'current_spacing', original_spacing,
         #       '\ntarget shape', new_shape, 'target_spacing', target_spacing)
         old_shape = data.shape[1:]
-        data = configuration_manager.resampling_fn_data(data, new_shape, original_spacing, target_spacing)
+
+
+        data = configuration_manager.resampling_fn_data(data, new_shape, original_spacing, target_spacing) #đây
         seg = configuration_manager.resampling_fn_seg(seg, new_shape, original_spacing, target_spacing)
+        
+        
+        
         if self.verbose:
             print(f'old shape: {old_shape}, new_shape: {new_shape}, old_spacing: {original_spacing}, '
                   f'new_spacing: {target_spacing}, fn_data: {configuration_manager.resampling_fn_data}')
